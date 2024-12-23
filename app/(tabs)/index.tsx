@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, Button } from "react-native";
+import { Image, StyleSheet, Platform, Button, View, Text } from "react-native";
 import "../../global.css";
 
 async function fetchHello() {
@@ -9,11 +9,11 @@ async function fetchHello() {
 
 export default function HomeScreen() {
   return (
-    <div className="">
-      <div className="text-center">
-        <h1 className="text-white text-6xl">Create a Workout</h1>
-      </div>
+    <View className="">
+      <View className="text-center">
+        <Text className="text-white text-6xl">Create a Workout</h1>
+      </View>
       <Button onPress={() => fetchHello()} title="Fetch hello" />;
-    </div>
+    </View>
   );
 }
