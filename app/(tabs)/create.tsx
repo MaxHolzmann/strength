@@ -52,7 +52,10 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-100">
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      className="flex-1 bg-gray-100"
+    >
       <View className="flex flex-col items-center p-4">
         <Text className="text-white text-4xl text-center mb-4">
           Create a Workout Template
@@ -76,32 +79,52 @@ export default function HomeScreen() {
               </>
             )}
           />
-
-          <Controller
-            name="splitName"
-            control={control}
-            defaultValue=""
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <>
-                <Text className="text-black mb-2">Split Name</Text>
-                <RNPickerSelect
-                  onValueChange={onChange}
-                  value={value}
-                  items={[
-                    { label: "Push", value: "push" },
-                    { label: "Pull", value: "pull" },
-                    { label: "Legs", value: "legs" },
-                  ]}
-                  placeholder={{ label: "Select a split...", value: null }}
-                  style={{
-                    inputAndroid:
-                      "border border-black rounded-md px-4 py-2 bg-gray-50",
-                  }}
-                />
-                {error && <Text className="text-red-500">{error.message}</Text>}
-              </>
-            )}
-          />
+          <View>
+            <Controller
+              name="splitName"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <>
+                  <Text className="text-black mb-2">Split Name</Text>
+                  <RNPickerSelect
+                    onValueChange={onChange}
+                    value={value}
+                    items={[
+                      { label: "Push", value: "push" },
+                      { label: "Pull", value: "pull" },
+                      { label: "Legs", value: "legs" },
+                    ]}
+                    placeholder={{ label: "Select a split...", value: null }}
+                    style={{
+                      inputAndroid: {
+                        borderWidth: 1,
+                        borderColor: "black",
+                        borderRadius: 8,
+                        padding: 12,
+                        backgroundColor: "#f9fafb",
+                        color: "black",
+                      },
+                      inputIOS: {
+                        borderWidth: 1,
+                        borderColor: "black",
+                        borderRadius: 8,
+                        padding: 12,
+                        backgroundColor: "#f9fafb", // Tailwind's bg-gray-50 equivalent
+                        color: "black",
+                      },
+                    }}
+                  />
+                  {error && (
+                    <Text className="text-red-500">{error.message}</Text>
+                  )}
+                </>
+              )}
+            />
+          </View>
 
           <View>
             <Text className="text-black mt-4 mb-2">Exercises</Text>

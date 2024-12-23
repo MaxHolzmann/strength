@@ -11,7 +11,7 @@ export default function HomeScreen() {
   return (
     <View className="">
       <View className="text-center">
-        <Text className="text-white text-6xl">Create a Workout</h1>
+        <Text className="text-white text-6xl">Create a Workout</Text>
       </View>
       <Button onPress={() => fetchHello()} title="Fetch hello" />;
     </View>

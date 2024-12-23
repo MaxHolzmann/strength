@@ -82,7 +82,7 @@ export default function SelectionScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      <div className="text-center">
+      <View className="text-center">
         <AntDesign
           className="absolute left-0 p-1"
           name="caretleft"
@@ -91,7 +91,7 @@ export default function SelectionScreen() {
           onPress={handleBack}
         />
         <Text className="text-2xl text-center my-5">Select an Exercise</Text>
-      </div>
+      </View>
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         {exerciseList.sort().map((exercise, index) => (
           <TouchableOpacity
