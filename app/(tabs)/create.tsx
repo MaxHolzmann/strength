@@ -57,8 +57,8 @@ export default function HomeScreen() {
       className="flex-1 bg-gray-100"
     >
       <View className="flex flex-col items-center p-4">
-        <Text className="text-white text-4xl text-center mb-4">
-          Create a Workout Template
+        <Text className="text-black text-4xl text-center mb-4">
+          New Workout Template
         </Text>
         <View className="bg-white rounded-xl p-4 shadow-md w-full">
           {/* Form starts here */}
@@ -149,6 +149,44 @@ export default function HomeScreen() {
                 >
                   <Text>Select Exercise</Text>
                 </Pressable>
+                <View className="mt-2">
+                  <Controller
+                    name={"set" + index}
+                    control={control}
+                    defaultValue=""
+                    render={({
+                      field: { onChange, value },
+                      fieldState: { error },
+                    }) => (
+                      <>
+                        <Text>Goal Set #</Text>
+                        <TextInput
+                          keyboardType="numeric"
+                          className="bg-gray-300 rounded-md p-2 my-2"
+                        ></TextInput>
+                      </>
+                    )}
+                  />
+                </View>
+                <View>
+                  <Controller
+                    name={"rep" + index}
+                    control={control}
+                    defaultValue=""
+                    render={({
+                      field: { onChange, value },
+                      fieldState: { error },
+                    }) => (
+                      <>
+                        <Text>Goal Rep #</Text>
+                        <TextInput
+                          keyboardType="numeric"
+                          className="bg-gray-300 rounded-md p-2 my-2"
+                        ></TextInput>
+                      </>
+                    )}
+                  />
+                </View>
               </View>
             ))}
             <Pressable
