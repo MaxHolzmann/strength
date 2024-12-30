@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Keyboard,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelection } from "../context/SelectionContext";
@@ -90,33 +91,11 @@ export default function HomeScreen() {
               }) => (
                 <>
                   <Text className="text-black mb-2">Split Name</Text>
-                  <RNPickerSelect
-                    onValueChange={onChange}
+                  <TextInput
                     value={value}
-                    items={[
-                      { label: "Push", value: "push" },
-                      { label: "Pull", value: "pull" },
-                      { label: "Legs", value: "legs" },
-                    ]}
-                    placeholder={{ label: "Select a split...", value: null }}
-                    style={{
-                      inputAndroid: {
-                        borderWidth: 1,
-                        borderColor: "black",
-                        borderRadius: 8,
-                        padding: 12,
-                        backgroundColor: "#f9fafb",
-                        color: "black",
-                      },
-                      inputIOS: {
-                        borderWidth: 1,
-                        borderColor: "black",
-                        borderRadius: 8,
-                        padding: 12,
-                        backgroundColor: "#f9fafb", // Tailwind's bg-gray-50 equivalent
-                        color: "black",
-                      },
-                    }}
+                    onChangeText={onChange}
+                    placeholder="Enter split name"
+                    className="border border-black rounded-md px-4 py-2 mb-2"
                   />
                   {error && (
                     <Text className="text-red-500">{error.message}</Text>
@@ -140,49 +119,64 @@ export default function HomeScreen() {
                   <AntDesign name="close" size={18} color="red" />
                 </Pressable>
                 <Text className="text-lg">Selected Exercise:</Text>
-                <Text className="text-blue-600 mb-2">
-                  {selections[`exercise${index + 1}`] || "None selected"}
-                </Text>
-                <Pressable
-                  onPress={() => handleSelectExercise(index)}
-                  className="bg-gray-300 rounded-md px-4 py-2"
-                >
-                  <Text>Select Exercise</Text>
-                </Pressable>
+
+                <Controller
+                  name={`exercise${index}`}
+                  control={control}
+                  defaultValue={selections[`exercise${index + 1}`]}
+                  render={({ field: { onChange, value } }) => {
+                    React.useEffect(() => {
+                      // Synchronize form state with selections
+                      onChange(selections[`exercise${index + 1}`] || null);
+                    }, [selections, index, onChange]);
+
+                    return (
+                      <>
+                        <Text className="text-blue-600 mb-2">
+                          {value || "None selected"}
+                        </Text>
+                        <Pressable
+                          onPress={() => handleSelectExercise(index)}
+                          className="bg-gray-300 rounded-md px-4 py-2"
+                        >
+                          <Text>Select Exercise</Text>
+                        </Pressable>
+                      </>
+                    );
+                  }}
+                />
                 <View className="mt-2">
                   <Controller
-                    name={"set" + index}
+                    name={`set${index}`}
                     control={control}
                     defaultValue=""
-                    render={({
-                      field: { onChange, value },
-                      fieldState: { error },
-                    }) => (
+                    render={({ field: { onChange, value } }) => (
                       <>
                         <Text>Goal Set #</Text>
                         <TextInput
                           keyboardType="numeric"
+                          value={value}
+                          onChangeText={onChange}
                           className="bg-gray-300 rounded-md p-2 my-2"
-                        ></TextInput>
+                        />
                       </>
                     )}
                   />
                 </View>
                 <View>
                   <Controller
-                    name={"rep" + index}
+                    name={`rep${index}`}
                     control={control}
                     defaultValue=""
-                    render={({
-                      field: { onChange, value },
-                      fieldState: { error },
-                    }) => (
+                    render={({ field: { onChange, value } }) => (
                       <>
                         <Text>Goal Rep #</Text>
                         <TextInput
                           keyboardType="numeric"
+                          value={value}
+                          onChangeText={onChange}
                           className="bg-gray-300 rounded-md p-2 my-2"
-                        ></TextInput>
+                        />
                       </>
                     )}
                   />
