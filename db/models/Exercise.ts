@@ -1,5 +1,7 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
+// add separate cardio based exercise model that does not require sets / reps, but rather duration.
+
 // Define the interface for the Exercise document
 interface IExercise extends Document {
   title?: string;

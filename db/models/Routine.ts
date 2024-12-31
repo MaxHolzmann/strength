@@ -1,18 +1,18 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
-interface IWorkoutTemplate extends Document {
+interface IRoutine extends Document {
   title?: string;
-  day?: string;
+  split?: string;
   exercises?: Array<any>;
   user?: mongoose.Types.ObjectId;
 }
 
-const workoutTemplateSchema: Schema<IWorkoutTemplate> = new Schema({
+const routineSchema: Schema<IRoutine> = new Schema({
   title: {
     type: String,
     required: false,
   },
-  day: {
+  split: {
     type: String,
     required: false,
   },
@@ -26,8 +26,8 @@ const workoutTemplateSchema: Schema<IWorkoutTemplate> = new Schema({
   },
 });
 
-const WorkoutTemplate: Model<IWorkoutTemplate> =
+const Routine: Model<IRoutine> =
   mongoose.models.Exercise ||
-  mongoose.model<IWorkoutTemplate>("WorkoutTemplate", workoutTemplateSchema);
+  mongoose.model<IRoutine>("Routine", routineSchema);
 
-export default WorkoutTemplate;
+export default Routine;

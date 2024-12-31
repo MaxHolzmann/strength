@@ -7,10 +7,10 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 export default function SelectionScreen() {
   const router = useRouter();
   const { setSelection } = useSelection();
-  const { exerciseIndex = "1" } = useLocalSearchParams(); // Default to "1" if undefined
+  const { exerciseIndex = "1" } = useLocalSearchParams();
 
   const handleSelection = (value: string) => {
-    setSelection(`exercise${exerciseIndex}`, value); // Dynamically update the selection
+    setSelection(`exercise${exerciseIndex}`, value);
     router.replace("/(tabs)/create");
   };
 
