@@ -8,6 +8,7 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "../../global.css";
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -27,6 +28,7 @@ export default function TabLayout() {
         }),
       }}
     >
+      {/* Visible in the bottom tab */}
       <Tabs.Screen
         name="index"
         options={{
@@ -41,17 +43,17 @@ export default function TabLayout() {
         options={{
           title: "Create",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={28} name="plus.circle.fill" color={color} />
           ),
         }}
       />
+
+      {/* Excluded from the bottom tab */}
       <Tabs.Screen
-        name="explore"
+        name="selection"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
+          href: null, // Exclude from tab navigation
+          tabBarStyle: { display: "none" }, // Hide tab bar when this screen is displayed
         }}
       />
     </Tabs>

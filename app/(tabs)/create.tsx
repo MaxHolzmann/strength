@@ -18,7 +18,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { selections, setSelections } = useSelection();
   const [exercises, setExercises] = useState([{}]);
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, unregister } = useForm();
 
   const handleSelectExercise = (index) => {
     router.push(`/selection?exerciseIndex=${index + 1}`);
@@ -31,6 +31,9 @@ export default function HomeScreen() {
   const deleteExercise = (index) => {
     const updatedSelections = { ...selections };
     delete updatedSelections[`exercise${index + 1}`];
+    unregister(`exercise${index}`);
+    unregister(`rep${index}`);
+    unregister(`set${index}`);
 
     const reindexedSelections = {};
     Object.keys(updatedSelections).forEach((key) => {
