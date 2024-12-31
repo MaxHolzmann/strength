@@ -18,7 +18,9 @@ export default function HomeScreen() {
   const router = useRouter();
   const { selections, setSelections } = useSelection();
   const [exercises, setExercises] = useState([{}]);
-  const { control, handleSubmit, unregister } = useForm();
+  const [reps, setReps] = useState([{}]);
+  const [sets, setSets] = useState([{}]);
+  const { control, handleSubmit, unregister, setValue } = useForm();
 
   const handleSelectExercise = (index) => {
     router.push(`/selection?exerciseIndex=${index + 1}`);
@@ -29,8 +31,10 @@ export default function HomeScreen() {
   };
 
   const deleteExercise = (index) => {
+    // use setValue to update the values of the hookform forms. :)
     const updatedSelections = { ...selections };
     delete updatedSelections[`exercise${index + 1}`];
+
     unregister(`exercise${index}`);
     unregister(`rep${index}`);
     unregister(`set${index}`);
