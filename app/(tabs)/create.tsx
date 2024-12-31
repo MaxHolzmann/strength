@@ -20,7 +20,21 @@ export default function HomeScreen() {
   const [exercises, setExercises] = useState([{}]);
   const [reps, setReps] = useState([{}]);
   const [sets, setSets] = useState([{}]);
-  const { control, handleSubmit, unregister, setValue } = useForm();
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    unregister,
+    setValue,
+    formState: {
+      errors,
+      isDirty,
+      dirtyFields,
+      isSubmitting,
+      touchedFields,
+      submitCount,
+    },
+  } = useForm();
 
   const handleSelectExercise = (index) => {
     router.push(`/selection?exerciseIndex=${index + 1}`);
@@ -31,32 +45,45 @@ export default function HomeScreen() {
   };
 
   const deleteExercise = (index) => {
-    // use setValue to update the values of the hookform forms. :)
     const updatedSelections = { ...selections };
     delete updatedSelections[`exercise${index + 1}`];
 
+    // Unregister the current indices
     unregister(`exercise${index}`);
     unregister(`rep${index}`);
     unregister(`set${index}`);
 
+    // Create a new array of exercises and reindex
+    const updatedExercises = exercises.filter((_, i) => i !== index);
+    setExercises(updatedExercises);
+
+    // Reindex remaining exercises
     const reindexedSelections = {};
-    Object.keys(updatedSelections).forEach((key) => {
-      const exerciseNumber = parseInt(key.replace("exercise", ""), 10);
-      if (exerciseNumber > index + 1) {
-        reindexedSelections[`exercise${exerciseNumber - 1}`] =
-          updatedSelections[key];
-      } else {
-        reindexedSelections[key] = updatedSelections[key];
-      }
+    updatedExercises.forEach((_, newIndex) => {
+      const oldIndex = newIndex >= index ? newIndex + 1 : newIndex;
+      reindexedSelections[`exercise${newIndex + 1}`] =
+        updatedSelections[`exercise${oldIndex + 1}`];
+      setValue(
+        `exercise${newIndex}`,
+        selections[`exercise${oldIndex + 1}`] || ""
+      );
+      setValue(`set${newIndex}`, getValues(`set${oldIndex}`) || "");
+      setValue(`rep${newIndex}`, getValues(`rep${oldIndex}`) || "");
     });
 
     setSelections(reindexedSelections);
-    const updatedExercises = exercises.filter((_, i) => i !== index);
-    setExercises(updatedExercises);
+
+    // Clean up old unused fields
+    for (let i = updatedExercises.length; i < exercises.length; i++) {
+      unregister(`exercise${i}`);
+      unregister(`set${i}`);
+      unregister(`rep${i}`);
+    }
   };
 
   const onSubmit = (data) => {
     console.log("Form Data:", data);
+    console.log("Form State", dirtyFields);
   };
 
   return (
