@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import { useSelection } from "../context/SelectionContext";
 import { useForm, Controller } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
+import Exercise from "@/db/models/Exercise";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -69,7 +70,6 @@ export default function HomeScreen() {
 
     setSelections(reindexedSelections);
 
-    // Clean up old unused fields
     for (let i = updatedExercises.length; i < exercises.length; i++) {
       unregister(`exercise${i}`);
       unregister(`set${i}`);
@@ -99,9 +99,33 @@ export default function HomeScreen() {
     return { workoutName, splitName, exercises: result };
   }
 
+  const addRoutine = async (title, split, exercises) => {
+    const newRoutine = {
+      title: title,
+      split: split,
+      exercises: exercises,
+    };
+    try {
+      const response = await fetch("/api/newroutine", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRoutine),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onSubmit = (data) => {
     const transformedData = transformWorkoutData(data);
     console.log("Transformed data:", transformedData);
+    addRoutine(
+      transformedData.workoutName,
+      transformedData.splitName,
+      transformedData.exercises
+    );
   };
 
   return (

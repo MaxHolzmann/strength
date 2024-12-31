@@ -6,16 +6,13 @@ dotenv.config();
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    // Connect to the database
     await connectMongo();
 
-    // Create a new Exercise entry
     const newEntry = await Exercise.create({
       title: "Exercise Example",
       user: null,
     });
 
-    // Return a JSON response
     return new Response(
       JSON.stringify({ message: "Exercise created", data: newEntry }),
       {
@@ -24,11 +21,8 @@ export async function GET(request: Request): Promise<Response> {
       }
     );
   } catch (error: unknown) {
-    // Ensure the error is properly typed
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error occurred";
-
-    // Handle errors
     return new Response(
       JSON.stringify({
         error: "Failed to create exercise",
