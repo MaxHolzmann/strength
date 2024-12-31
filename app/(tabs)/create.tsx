@@ -12,7 +12,6 @@ import { useRouter } from "expo-router";
 import { useSelection } from "../context/SelectionContext";
 import { useForm, Controller } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
-import RNPickerSelect from "react-native-picker-select";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -48,16 +47,13 @@ export default function HomeScreen() {
     const updatedSelections = { ...selections };
     delete updatedSelections[`exercise${index + 1}`];
 
-    // Unregister the current indices
     unregister(`exercise${index}`);
     unregister(`rep${index}`);
     unregister(`set${index}`);
 
-    // Create a new array of exercises and reindex
     const updatedExercises = exercises.filter((_, i) => i !== index);
     setExercises(updatedExercises);
 
-    // Reindex remaining exercises
     const reindexedSelections = {};
     updatedExercises.forEach((_, newIndex) => {
       const oldIndex = newIndex >= index ? newIndex + 1 : newIndex;
@@ -81,9 +77,31 @@ export default function HomeScreen() {
     }
   };
 
+  function transformWorkoutData(data) {
+    const { workoutName, splitName, ...rest } = data;
+
+    const result = [];
+    const keysByIndex = {};
+
+    Object.keys(rest).forEach((key) => {
+      const match = key.match(/([a-zA-Z]+)(\d+)/);
+      if (match) {
+        const [_, prefix, index] = match;
+        if (!keysByIndex[index]) keysByIndex[index] = {};
+        keysByIndex[index][prefix] = rest[key];
+      }
+    });
+
+    Object.keys(keysByIndex).forEach((index) => {
+      result.push(keysByIndex[index]);
+    });
+
+    return { workoutName, splitName, exercises: result };
+  }
+
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    console.log("Form State", dirtyFields);
+    const transformedData = transformWorkoutData(data);
+    console.log("Transformed data:", transformedData);
   };
 
   return (
