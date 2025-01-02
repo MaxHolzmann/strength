@@ -18,8 +18,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { selections, setSelections } = useSelection();
   const [exercises, setExercises] = useState([{}]);
-  const [reps, setReps] = useState([{}]);
-  const [sets, setSets] = useState([{}]);
+
   const {
     control,
     handleSubmit,
