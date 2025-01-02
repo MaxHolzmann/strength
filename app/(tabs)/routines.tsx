@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, SafeAreaView } from "react-native";
 
 export default function RoutinesPage() {
-  const [routines, setRoutines] = useState([]); // Ensure the initial state matches the expected structure
-  const [loading, setLoading] = useState(true); // Handle loading state
-  const [error, setError] = useState(null); // Handle errors
+  const [routines, setRoutines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const getRoutines = async () => {
     try {
@@ -15,13 +15,12 @@ export default function RoutinesPage() {
       const data = await response.json();
       console.log("Raw API Response:", data);
 
-      // Extract the data array from the response and set it to state
       setRoutines(data.data || []);
     } catch (err) {
       console.error("Error fetching routines:", err.message);
-      setError(err.message); // Save the error message to state
+      setError(err.message);
     } finally {
-      setLoading(false); // End the loading state
+      setLoading(false);
     }
   };
 
@@ -30,7 +29,7 @@ export default function RoutinesPage() {
   }, []);
 
   useEffect(() => {
-    console.log("Updated Routines State:", routines); // Log routines after the state update
+    console.log("Updated Routines State:", routines);
   }, [routines]);
 
   if (loading) {
@@ -42,23 +41,25 @@ export default function RoutinesPage() {
   }
 
   return (
-    <ScrollView className="bg-white flex-1">
-      <Text className="text-center text-xl">Routines</Text>
-      <View className="flex flex-col justify-center gap-8">
-        {routines.length === 0 ? (
-          <Text className="text-center">No routines found.</Text>
-        ) : (
-          routines.map((item, index) => (
-            <View
-              className="rounded-lg bg-gray-200 shadow-md flex flex-col p-4 text-center items-center"
-              key={index}
-            >
-              <Text>{item.title}</Text>
-              <Text>{item.split}</Text>
-            </View>
-          ))
-        )}
-      </View>
-    </ScrollView>
+    <SafeAreaView className="bg-white flex-1">
+      <ScrollView className="">
+        <Text className="text-center text-xl">Routines</Text>
+        <View className="flex flex-col justify-center gap-8">
+          {routines.length === 0 ? (
+            <Text className="text-center">No routines found.</Text>
+          ) : (
+            routines.map((item, index) => (
+              <View
+                className="rounded-lg bg-gray-200 shadow-md flex flex-col p-4 text-center items-center"
+                key={index}
+              >
+                <Text>{item.title}</Text>
+                <Text>{item.split}</Text>
+              </View>
+            ))
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

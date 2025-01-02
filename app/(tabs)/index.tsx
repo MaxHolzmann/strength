@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Platform, Button, View, Text } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  Button,
+  View,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import "../../global.css";
 
 async function fetchHello() {
@@ -9,11 +17,13 @@ async function fetchHello() {
 
 export default function HomeScreen() {
   return (
-    <View className="">
-      <View className="text-center">
-        <Text className="text-white text-6xl">Create a Workout</Text>
+    <SafeAreaView className="bg-white flex-1">
+      <View className="">
+        <View className="text-center">
+          <Text className="text-6xl">Create a Workout</Text>
+        </View>
+        <Button onPress={() => fetchHello()} title="Fetch hello" />;
       </View>
-      <Button onPress={() => fetchHello()} title="Fetch hello" />;
-    </View>
+    </SafeAreaView>
   );
 }
