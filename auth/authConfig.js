@@ -1,6 +1,4 @@
-import Config from "react-native-config";
-
-const GOOGLE_OAUTH_APP_GUID = Config.GOOGLE_OAUTH_APP_GUID;
+const GOOGLE_OAUTH_APP_GUID = process.env.EXPO_PUBLIC_GOOGLE_AUTH;
 
 const authConfig = {
   issuer: "https://accounts.google.com",
